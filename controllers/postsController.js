@@ -1,9 +1,18 @@
+const posts = require("../data/posts");
+
 const getAllPosts = (req, res) => {
-    res.send("Lista dei post");
+    res.json(posts);
 };
 
 const getPostById = (req, res) => {
-    res.send(`Dettaglio post ${req.params.id}`);
+    const id = Number(req.params.id);
+    const post = posts.find((item) => item.id === id);
+
+    if (!post) {
+        return res.status(404).json({ message: "Post non trovato" });
+    }
+
+    res.json(post);
 };
 
 const createPost = (req, res) => {
@@ -19,7 +28,16 @@ const patchPost = (req, res) => {
 };
 
 const deletePost = (req, res) => {
-    res.send(`Eliminazione post ${req.params.id}`);
+    const id = Number(req.params.id);
+    const index = posts.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: "Post non trovato" });
+    }
+
+    posts.splice(index, 1);
+    console.log("Lista post aggiornata:", posts);
+    res.status(204).send();
 };
 
 module.exports = {

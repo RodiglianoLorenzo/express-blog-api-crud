@@ -16,11 +16,21 @@ const getPostById = (req, res) => {
 };
 
 const createPost = (req, res) => {
-    res.send("Creazione post");
+    const newId = posts.length > 0 ? posts[posts.length - 1].id + 1 : 1;
+    const newPost = {
+        id: newId,
+        title: req.body.title,
+        content: req.body.content,
+        author: req.body.author,
+        image: req.body.image,
+    };
+
+    posts.push(newPost);
+    res.status(201).json(newPost);
 };
 
 const updatePost = (req, res) => {
-    res.send(`Modifica totale post ${req.params.id}`);
+
 };
 
 const patchPost = (req, res) => {

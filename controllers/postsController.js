@@ -16,7 +16,8 @@ const getPostById = (req, res) => {
 };
 
 const createPost = (req, res) => {
-    const newId = posts.length > 0 ? posts[posts.length - 1].id + 1 : 1;
+    const newId = posts[posts.length - 1].id + 1;
+
     const newPost = {
         id: newId,
         title: req.body.title,
@@ -24,12 +25,27 @@ const createPost = (req, res) => {
         author: req.body.author,
         image: req.body.image,
     };
-
     posts.push(newPost);
     res.status(201).json(newPost);
 };
 
 const updatePost = (req, res) => {
+    const id = parseInt(req.params.id);
+    const post = posts.find((item) => item.id === id);
+
+    if (!post) {
+        res.status(404)
+
+        return res.json({ message: "Post non trovato" })
+    }
+    post.title = req.body.title;
+    post.content = req.body.content;
+    post.author = req.body.author;
+    post.image = req.body.image;
+
+    console.log(post);
+
+    res.json(post);
 
 };
 
